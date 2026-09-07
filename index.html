@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="theme-color" content="#00923F">
     <title>Kalkulator Kehadiran Generus</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <main class="app-container">
 
-        <!-- HEADER -->
         <header class="app-header">
-            <div class="brand-mark">KG</div>
+            <div class="brand-mark">
+                <img src="logo-ldii.png" alt="Logo LDII">
+            </div>
 
             <div>
                 <h1>Kalkulator Kehadiran</h1>
@@ -23,11 +22,9 @@
             </div>
         </header>
 
-
-        <!-- FORM -->
         <section class="form-card">
 
-            <!-- KELOMPOK -->
+            <!-- 1. KELOMPOK -->
             <div class="section">
                 <div class="section-title">
                     <span class="step-number">1</span>
@@ -38,40 +35,27 @@
                 </div>
 
                 <div class="selection-grid group-selection">
-
-                    <button
-                        type="button"
-                        class="selection-card"
-                        data-group="Kelompok 1">
+                    <button type="button" class="selection-card" data-group="Mangga Dua">
                         <span class="selection-icon">01</span>
-                        <span>Kelompok 1</span>
+                        <span>Mangga Dua</span>
                     </button>
 
-                    <button
-                        type="button"
-                        class="selection-card"
-                        data-group="Kelompok 2">
+                    <button type="button" class="selection-card" data-group="Manembo-nembo Tengah">
                         <span class="selection-icon">02</span>
-                        <span>Kelompok 2</span>
+                        <span>Manembo-nembo Tengah</span>
                     </button>
 
-                    <button
-                        type="button"
-                        class="selection-card"
-                        data-group="Kelompok 3">
+                    <button type="button" class="selection-card" data-group="Manembo-nembo Atas">
                         <span class="selection-icon">03</span>
-                        <span>Kelompok 3</span>
+                        <span>Manembo-nembo Atas</span>
                     </button>
-
                 </div>
             </div>
 
-
-            <!-- BULAN -->
+            <!-- 2. BULAN -->
             <div class="section">
                 <div class="section-title">
                     <span class="step-number">2</span>
-
                     <div>
                         <h2>Pilih Bulan</h2>
                         <p>Tentukan periode rekap</p>
@@ -85,12 +69,10 @@
                 </div>
             </div>
 
-
-            <!-- JENJANG -->
+            <!-- 3. JENJANG -->
             <div class="section">
                 <div class="section-title">
                     <span class="step-number">3</span>
-
                     <div>
                         <h2>Pilih Jenjang</h2>
                         <p>Tentukan jenjang pengajian</p>
@@ -98,204 +80,93 @@
                 </div>
 
                 <div class="selection-column">
-
-                    <button
-                        type="button"
-                        class="selection-card level-card"
-                        data-level="Caberawit">
-
+                    <button type="button" class="selection-card level-card" data-level="Caberawit">
                         <span class="level-name">Caberawit</span>
-                        <span class="level-description">
-                            Jenjang Caberawit
-                        </span>
-
                     </button>
 
-                    <button
-                        type="button"
-                        class="selection-card level-card"
-                        data-level="Pra-Remaja">
-
+                    <button type="button" class="selection-card level-card" data-level="Pra-Remaja">
                         <span class="level-name">Pra-Remaja</span>
-                        <span class="level-description">
-                            Jenjang Pra-Remaja
-                        </span>
-
                     </button>
 
-                    <button
-                        type="button"
-                        class="selection-card level-card"
-                        data-level="Remaja">
-
+                    <button type="button" class="selection-card level-card" data-level="Remaja">
                         <span class="level-name">Remaja</span>
-                        <span class="level-description">
-                            Jenjang Remaja
-                        </span>
-
                     </button>
-
                 </div>
             </div>
 
-
-            <!-- DATA KEHADIRAN -->
-            <div class="section">
-
+            <!-- 4. INPUT -->
+            <div class="section input-section">
                 <div class="section-title">
                     <span class="step-number">4</span>
-
                     <div>
                         <h2>Input Data</h2>
                         <p>Masukkan data pengajian</p>
                     </div>
                 </div>
 
-
                 <div class="input-group">
-
-                    <label for="participants">
-                        Jumlah Peserta
-                    </label>
-
-                    <div class="number-input">
-                        <input
-                            type="number"
-                            id="participants"
-                            min="1"
-                            step="1"
-                            placeholder="Contoh: 30">
-                    </div>
-
+                    <label for="participants">Jumlah Peserta</label>
+                    <input type="number" id="participants" min="1" step="1" inputmode="numeric" placeholder="Contoh: 30">
                 </div>
 
-
                 <div class="input-group">
-
-                    <label for="meetings">
-                        Jumlah Pertemuan
-                    </label>
-
-                    <div class="number-input">
-                        <input
-                            type="number"
-                            id="meetings"
-                            min="1"
-                            step="1"
-                            placeholder="Contoh: 4">
-                    </div>
-
+                    <label for="meetings">Jumlah Pertemuan</label>
+                    <input type="number" id="meetings" min="1" step="1" inputmode="numeric" placeholder="Contoh: 4">
                 </div>
-
 
                 <div class="attendance-grid">
 
-                    <div class="input-group">
-                        <label for="permission">
-                            <span class="dot dot-permission"></span>
-                            Izin
-                        </label>
-
-                        <input
-                            type="number"
-                            id="permission"
-                            min="0"
-                            step="1"
-                            value="0">
+                    <div class="attendance-input permission-input">
+                        <label for="permission"><span class="status-dot"></span>Izin</label>
+                        <input type="number" id="permission" min="0" step="1" value="0" inputmode="numeric">
                     </div>
 
-
-                    <div class="input-group">
-                        <label for="sick">
-                            <span class="dot dot-sick"></span>
-                            Sakit
-                        </label>
-
-                        <input
-                            type="number"
-                            id="sick"
-                            min="0"
-                            step="1"
-                            value="0">
+                    <div class="attendance-input sick-input">
+                        <label for="sick"><span class="status-dot"></span>Sakit</label>
+                        <input type="number" id="sick" min="0" step="1" value="0" inputmode="numeric">
                     </div>
 
-
-                    <div class="input-group">
-                        <label for="absent">
-                            <span class="dot dot-absent"></span>
-                            Alpa
-                        </label>
-
-                        <input
-                            type="number"
-                            id="absent"
-                            min="0"
-                            step="1"
-                            value="0">
+                    <div class="attendance-input absent-input">
+                        <label for="absent"><span class="status-dot"></span>Alpa</label>
+                        <input type="number" id="absent" min="0" step="1" value="0" inputmode="numeric">
                     </div>
 
                 </div>
-
             </div>
 
-
-            <!-- BUTTON -->
-            <button
-                type="button"
-                id="calculateButton"
-                class="calculate-button">
-
+            <button type="button" id="calculateButton" class="calculate-button">
                 <span>Hitung Kehadiran</span>
                 <span class="button-arrow">→</span>
-
             </button>
 
         </section>
-
     </main>
 
-
-    <!-- MODAL KONFIRMASI -->
-    <div id="confirmationModal" class="modal-overlay">
-
-        <div class="confirmation-modal">
-
+    <!-- KONFIRMASI -->
+    <div id="confirmationModal" class="modal-overlay" aria-hidden="true">
+        <div class="confirmation-modal" role="dialog" aria-modal="true" aria-labelledby="confirmationTitle">
             <div class="modal-icon">?</div>
 
-            <h2>Apakah data yang diinput sudah benar?</h2>
+            <h2 id="confirmationTitle">Apakah data yang diinput sudah benar?</h2>
 
             <p id="confirmationText">
                 Periksa kembali data sebelum melanjutkan.
             </p>
 
             <div class="modal-actions">
-
-                <button
-                    type="button"
-                    id="cancelButton"
-                    class="modal-button cancel-button">
+                <button type="button" id="cancelButton" class="modal-button cancel-button">
                     Tidak
                 </button>
 
-                <button
-                    type="button"
-                    id="confirmButton"
-                    class="modal-button confirm-button">
-                    Ya, Lanjutkan
+                <button type="button" id="confirmButton" class="modal-button confirm-button">
+                    Ya
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-
-    <!-- TOAST -->
-    <div id="toast" class="toast"></div>
-
+    <div id="toast" class="toast" role="status"></div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
