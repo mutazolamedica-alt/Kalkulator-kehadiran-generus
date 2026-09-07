@@ -1,40 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const isInputPage = document.getElementById("calculateButton");
-    const isResultPage = document.getElementById("attendancePercentage");
-
+    const calculateButton = document.getElementById("calculateButton");
+    const attendancePercentage = document.getElementById("attendancePercentage");
 
     /* ==========================================
        INPUT PAGE
     ========================================== */
 
-    if (isInputPage) {
+    if (calculateButton) {
 
-        const groupButtons =
-            document.querySelectorAll("[data-group]");
+        const groupButtons = document.querySelectorAll("[data-group]");
+        const levelButtons = document.querySelectorAll("[data-level]");
 
-        const levelButtons =
-            document.querySelectorAll("[data-level]");
+        const monthInput = document.getElementById("monthInput");
 
-        const monthInput =
-            document.getElementById("monthInput");
+        const modal = document.getElementById("confirmationModal");
+        const confirmationText = document.getElementById("confirmationText");
 
-        const modal =
-            document.getElementById("confirmationModal");
-
-        const confirmationText =
-            document.getElementById("confirmationText");
-
-        const cancelButton =
-            document.getElementById("cancelButton");
-
-        const confirmButton =
-            document.getElementById("confirmButton");
-
+        const cancelButton = document.getElementById("cancelButton");
+        const confirmButton = document.getElementById("confirmButton");
 
         let selectedGroup = "";
         let selectedLevel = "";
-
 
         /* ------------------------------------------
            GENERATE MONTH
@@ -55,38 +42,27 @@ document.addEventListener("DOMContentLoaded", () => {
             "Desember"
         ];
 
-
         const currentDate = new Date();
-
-        const currentMonth =
-            currentDate.getMonth();
-
-        const currentYear =
-            currentDate.getFullYear();
-
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
 
         monthNames.forEach((month, index) => {
+            const option = document.createElement("option");
 
-            const option =
-                document.createElement("option");
-
-            option.value =
-                `${index + 1}-${currentYear}`;
-
-            option.textContent =
-                `${month} ${currentYear}`;
+            option.value = `${index + 1}-${currentYear}`;
+            option.textContent = `${month} ${currentYear}`;
 
             monthInput.appendChild(option);
-
         });
 
+        /* Pilih bulan berjalan secara default */
+        monthInput.value = `${currentMonth + 1}-${currentYear}`;
 
         /* ------------------------------------------
            SELECT GROUP
         ------------------------------------------ */
 
         groupButtons.forEach(button => {
-
             button.addEventListener("click", () => {
 
                 groupButtons.forEach(item => {
@@ -94,21 +70,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 button.classList.add("selected");
-
-                selectedGroup =
-                    button.dataset.group;
+                selectedGroup = button.dataset.group;
 
             });
-
         });
-
 
         /* ------------------------------------------
            SELECT LEVEL
         ------------------------------------------ */
 
         levelButtons.forEach(button => {
-
             button.addEventListener("click", () => {
 
                 levelButtons.forEach(item => {
@@ -116,134 +87,93 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 button.classList.add("selected");
-
-                selectedLevel =
-                    button.dataset.level;
+                selectedLevel = button.dataset.level;
 
             });
-
         });
 
-
         /* ------------------------------------------
-           SHOW MODAL
+           OPEN CONFIRMATION
         ------------------------------------------ */
 
-        isInputPage.addEventListener("click", () => {
+        calculateButton.addEventListener("click", () => {
 
-            const participants =
-                Number(
-                    document.getElementById("participants").value
-                );
-
-            const meetings =
-                Number(
-                    document.getElementById("meetings").value
-                );
-
-            const permission =
-                Number(
-                    document.getElementById("permission").value
-                );
-
-            const sick =
-                Number(
-                    document.getElementById("sick").value
-                );
-
-            const absent =
-                Number(
-                    document.getElementById("absent").value
-                );
-
-
-            /* BASIC VALIDATION */
+            const participants = getNumber("participants");
+            const meetings = getNumber("meetings");
+            const permission = getNumber("permission");
+            const sick = getNumber("sick");
+            const absent = getNumber("absent");
 
             if (!selectedGroup) {
                 showToast("Silakan pilih kelompok terlebih dahulu.");
                 return;
             }
 
-
             if (!monthInput.value) {
                 showToast("Silakan pilih bulan terlebih dahulu.");
                 return;
             }
-
 
             if (!selectedLevel) {
                 showToast("Silakan pilih jenjang terlebih dahulu.");
                 return;
             }
 
-
             if (participants <= 0) {
                 showToast("Jumlah peserta harus lebih dari 0.");
                 return;
             }
-
 
             if (meetings <= 0) {
                 showToast("Jumlah pertemuan harus lebih dari 0.");
                 return;
             }
 
-
-            if (
-                permission < 0 ||
-                sick < 0 ||
-                absent < 0
-            ) {
+            if (permission < 0 || sick < 0 || absent < 0) {
                 showToast("Data kehadiran tidak boleh negatif.");
                 return;
             }
 
+            const totalOpportunity = participants * meetings;
+            const totalNotPresent = permission + sick + absent;
 
-            const totalOpportunity =
-                participants * meetings;
-
-            const totalAbsent =
-                permission + sick + absent;
-
-
-            /* DATA TIDAK BOLEH MELEBIHI
-               TOTAL KESEMPATAN */
-
-            if (totalAbsent > totalOpportunity) {
-
-                showToast(
-                    "Jumlah izin, sakit, dan alpa melebihi total kesempatan hadir."
-                );
-
+            if (totalNotPresent > totalOpportunity) {
+                showToast("Jumlah izin, sakit, dan alpa melebihi total kesempatan hadir.");
                 return;
             }
 
-
             const selectedOption =
-                monthInput.options[
-                    monthInput.selectedIndex
-                ];
-
+                monthInput.options[monthInput.selectedIndex];
 
             confirmationText.textContent =
                 `${selectedGroup} • ${selectedLevel} • ${selectedOption.textContent}`;
 
-
             modal.classList.add("show");
-
+            modal.setAttribute("aria-hidden", "false");
         });
-
 
         /* ------------------------------------------
            CANCEL
         ------------------------------------------ */
 
-        cancelButton.addEventListener("click", () => {
+        cancelButton.addEventListener("click", closeModal);
 
-            modal.classList.remove("show");
-
+        modal.addEventListener("click", event => {
+            if (event.target === modal) {
+                closeModal();
+            }
         });
 
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" && modal.classList.contains("show")) {
+                closeModal();
+            }
+        });
+
+        function closeModal() {
+            modal.classList.remove("show");
+            modal.setAttribute("aria-hidden", "true");
+        }
 
         /* ------------------------------------------
            CONFIRM
@@ -251,35 +181,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         confirmButton.addEventListener("click", () => {
 
-            const participants =
-                Number(
-                    document.getElementById("participants").value
-                );
+            const participants = getNumber("participants");
+            const meetings = getNumber("meetings");
+            const permission = getNumber("permission");
+            const sick = getNumber("sick");
+            const absent = getNumber("absent");
 
-            const meetings =
-                Number(
-                    document.getElementById("meetings").value
-                );
-
-            const permission =
-                Number(
-                    document.getElementById("permission").value
-                );
-
-            const sick =
-                Number(
-                    document.getElementById("sick").value
-                );
-
-            const absent =
-                Number(
-                    document.getElementById("absent").value
-                );
-
-
-            const totalOpportunity =
-                participants * meetings;
-
+            const totalOpportunity = participants * meetings;
 
             const present =
                 totalOpportunity -
@@ -287,220 +195,117 @@ document.addEventListener("DOMContentLoaded", () => {
                 sick -
                 absent;
 
-
             const attendancePercentage =
                 (present / totalOpportunity) * 100;
 
-
             const permissionSickPercentage =
-                ((permission + sick) /
-                    totalOpportunity) * 100;
-
+                ((permission + sick) / totalOpportunity) * 100;
 
             const absentPercentage =
-                (absent /
-                    totalOpportunity) * 100;
-
+                (absent / totalOpportunity) * 100;
 
             const selectedOption =
-                monthInput.options[
-                    monthInput.selectedIndex
-                ];
-
+                monthInput.options[monthInput.selectedIndex];
 
             const calculationData = {
-
                 group: selectedGroup,
+                month: selectedOption.textContent,
+                monthValue: monthInput.value,
+                level: selectedLevel,
 
-                month:
-                    selectedOption.textContent,
+                participants,
+                meetings,
+                permission,
+                sick,
+                absent,
 
-                monthValue:
-                    monthInput.value,
-
-                level:
-                    selectedLevel,
-
-                participants:
-                    participants,
-
-                meetings:
-                    meetings,
-
-                permission:
-                    permission,
-
-                sick:
-                    sick,
-
-                absent:
-                    absent,
-
-                present:
-                    present,
-
-                attendancePercentage:
-                    attendancePercentage,
-
-                permissionSickPercentage:
-                    permissionSickPercentage,
-
-                absentPercentage:
-                    absentPercentage
-
+                present,
+                attendancePercentage,
+                permissionSickPercentage,
+                absentPercentage
             };
 
-
             /*
-             * UNTUK TAHAP FRONTEND:
-             * Data sementara disimpan di browser.
+             * SEMENTARA:
+             * localStorage digunakan untuk pengujian frontend.
              *
-             * NANTI akan diganti dengan:
-             * Frontend → Apps Script → Database.
+             * NANTI DIGANTI:
+             * Frontend → Apps Script → Google Sheets/Database.
              */
-
             localStorage.setItem(
                 "generusCalculation",
                 JSON.stringify(calculationData)
             );
 
+            closeModal();
 
-            modal.classList.remove("show");
-
-
-            /*
-             * PINDAH HALAMAN
-             */
-
-            window.location.href =
-                "hasil.html";
-
+            window.location.href = "hasil.html";
         });
-
-
-        /* ------------------------------------------
-           CLOSE MODAL WHEN CLICK OUTSIDE
-        ------------------------------------------ */
-
-        modal.addEventListener("click", event => {
-
-            if (event.target === modal) {
-                modal.classList.remove("show");
-            }
-
-        });
-
     }
-
 
     /* ==========================================
        RESULT PAGE
     ========================================== */
 
-    if (isResultPage) {
+    if (attendancePercentage) {
 
         const rawData =
-            localStorage.getItem(
-                "generusCalculation"
-            );
-
+            localStorage.getItem("generusCalculation");
 
         if (!rawData) {
-
-            window.location.href =
-                "index.html";
-
+            window.location.href = "index.html";
             return;
         }
 
+        let data;
 
-        const data =
-            JSON.parse(rawData);
-
-
-        /* ------------------------------------------
-           ELEMENTS
-        ------------------------------------------ */
-
-        const attendancePercentage =
-            document.getElementById(
-                "attendancePercentage"
-            );
+        try {
+            data = JSON.parse(rawData);
+        } catch (error) {
+            localStorage.removeItem("generusCalculation");
+            window.location.href = "index.html";
+            return;
+        }
 
         const donutPercentage =
-            document.getElementById(
-                "donutPercentage"
-            );
+            document.getElementById("donutPercentage");
 
         const resultGroup =
-            document.getElementById(
-                "resultGroup"
-            );
+            document.getElementById("resultGroup");
 
         const resultLevel =
-            document.getElementById(
-                "resultLevel"
-            );
+            document.getElementById("resultLevel");
 
         const resultMonth =
-            document.getElementById(
-                "resultMonth"
-            );
+            document.getElementById("resultMonth");
 
         const legendPresent =
-            document.getElementById(
-                "legendPresent"
-            );
+            document.getElementById("legendPresent");
 
         const legendPermission =
-            document.getElementById(
-                "legendPermission"
-            );
+            document.getElementById("legendPermission");
 
         const legendAbsent =
-            document.getElementById(
-                "legendAbsent"
-            );
+            document.getElementById("legendAbsent");
 
         const donutChart =
-            document.getElementById(
-                "donutChart"
-            );
-
-
-        /* ------------------------------------------
-           FORMAT PERCENTAGE
-        ------------------------------------------ */
+            document.getElementById("donutChart");
 
         function formatPercentage(value) {
-
             return value
                 .toFixed(2)
                 .replace(".", ",") + "%";
-
         }
 
-
-        const present =
-            data.attendancePercentage;
-
-        const permission =
-            data.permissionSickPercentage;
-
-        const absent =
-            data.absentPercentage;
-
-
-        /* ------------------------------------------
-           DISPLAY
-        ------------------------------------------ */
+        const present = Number(data.attendancePercentage);
+        const permission = Number(data.permissionSickPercentage);
+        const absent = Number(data.absentPercentage);
 
         attendancePercentage.textContent =
             formatPercentage(present);
 
         donutPercentage.textContent =
             formatPercentage(present);
-
 
         resultGroup.textContent =
             data.group;
@@ -511,7 +316,6 @@ document.addEventListener("DOMContentLoaded", () => {
         resultMonth.textContent =
             data.month;
 
-
         legendPresent.textContent =
             formatPercentage(present);
 
@@ -521,79 +325,63 @@ document.addEventListener("DOMContentLoaded", () => {
         legendAbsent.textContent =
             formatPercentage(absent);
 
-
-        /* ------------------------------------------
-           DONUT CHART
-        ------------------------------------------ */
-
-        const presentAngle =
-            (present / 100) * 360;
-
+        /* Donut chart */
+        const presentAngle = (present / 100) * 360;
         const permissionAngle =
             ((present + permission) / 100) * 360;
-
 
         donutChart.style.setProperty(
             "--present-angle",
             `${presentAngle}deg`
         );
 
-
         donutChart.style.setProperty(
             "--permission-angle",
             `${permissionAngle}deg`
         );
 
-
-        /* ------------------------------------------
-           BACK BUTTON
-        ------------------------------------------ */
-
+        /* Navigation */
         document
             .getElementById("backButton")
             .addEventListener("click", () => {
-
-                window.location.href =
-                    "index.html";
-
+                window.location.href = "index.html";
             });
-
 
         document
             .getElementById("backToInput")
             .addEventListener("click", () => {
-
-                window.location.href =
-                    "index.html";
-
+                window.location.href = "index.html";
             });
-
     }
 
-
     /* ==========================================
-       TOAST FUNCTION
+       HELPER
     ========================================== */
+
+    function getNumber(id) {
+        const element = document.getElementById(id);
+
+        if (!element) return 0;
+
+        const value = Number(element.value);
+
+        return Number.isFinite(value) ? value : 0;
+    }
 
     function showToast(message) {
 
-        const toast =
-            document.getElementById("toast");
+        const toast = document.getElementById("toast");
 
         if (!toast) return;
 
-
         toast.textContent = message;
-
         toast.classList.add("show");
 
+        clearTimeout(window.__toastTimer);
 
-        setTimeout(() => {
-
+        window.__toastTimer = setTimeout(() => {
             toast.classList.remove("show");
-
         }, 2800);
-
     }
 
 });
