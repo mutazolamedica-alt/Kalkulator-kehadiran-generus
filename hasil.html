@@ -3,23 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="theme-color" content="#00923F">
     <title>Hasil Kehadiran Generus</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <main class="app-container result-container">
 
-        <!-- HEADER -->
         <header class="result-header">
-
-            <button
-                type="button"
-                id="backButton"
-                class="back-button">
+            <button type="button" id="backButton" class="back-button" aria-label="Kembali">
                 ←
             </button>
 
@@ -27,125 +20,69 @@
                 <p class="result-overline">HASIL REKAP</p>
                 <h1 id="resultTitle">Kehadiran Generus</h1>
             </div>
-
         </header>
 
-
-        <!-- INFO PERIODE -->
         <div class="result-meta">
-
-            <span id="resultGroup">
-                Kelompok 1
-            </span>
-
+            <span id="resultGroup">Mangga Dua</span>
             <span class="meta-divider">•</span>
-
-            <span id="resultLevel">
-                Caberawit
-            </span>
-
+            <span id="resultLevel">Caberawit</span>
             <span class="meta-divider">•</span>
-
-            <span id="resultMonth">
-                September 2026
-            </span>
-
+            <span id="resultMonth">September 2026</span>
         </div>
 
-
-        <!-- HASIL UTAMA -->
         <section class="main-result-card">
+            <p class="result-label">TINGKAT KEHADIRAN</p>
 
-            <p class="result-label">
-                TINGKAT KEHADIRAN
-            </p>
+            <div class="percentage" id="attendancePercentage">0%</div>
 
-            <div class="percentage" id="attendancePercentage">
-                0%
-            </div>
-
-            <p class="result-status" id="resultStatus">
-                Kehadiran
-            </p>
-
+            <p class="result-status">Kehadiran</p>
         </section>
 
-
-        <!-- DONUT CHART -->
         <section class="chart-card">
-
             <div class="donut-container">
-
-                <div
-                    class="donut-chart"
-                    id="donutChart">
-
+                <div class="donut-chart" id="donutChart">
                     <div class="donut-center">
                         <strong id="donutPercentage">0%</strong>
                         <span>Kehadiran</span>
                     </div>
-
                 </div>
-
             </div>
-
 
             <div class="chart-legend">
 
                 <div class="legend-item">
-
                     <span class="legend-color present"></span>
-
                     <div>
                         <strong>Hadir</strong>
                         <span id="legendPresent">0%</span>
                     </div>
-
                 </div>
 
-
                 <div class="legend-item">
-
                     <span class="legend-color permission"></span>
-
                     <div>
                         <strong>Izin + Sakit</strong>
                         <span id="legendPermission">0%</span>
                     </div>
-
                 </div>
 
-
                 <div class="legend-item">
-
                     <span class="legend-color absent"></span>
-
                     <div>
                         <strong>Alpa</strong>
                         <span id="legendAbsent">0%</span>
                     </div>
-
                 </div>
 
             </div>
-
         </section>
 
-
-        <!-- ACTION -->
-        <button
-            type="button"
-            id="backToInput"
-            class="calculate-button secondary-action">
-
+        <button type="button" id="backToInput" class="calculate-button secondary-action">
             <span>← Kembali ke Input</span>
-
         </button>
 
     </main>
 
-
     <script src="script.js"></script>
-
 </body>
 </html>
